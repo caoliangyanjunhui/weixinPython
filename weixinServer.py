@@ -11,10 +11,12 @@ from SocketServer import ThreadingMixIn
 import threading
 import sys
 import hashlib
+import timeHelper
+import cgi
 
 
 class Handler( BaseHTTPRequestHandler ):
-	TOKEN = 'this_is_my_token'
+	TOKEN = 'thisismytoken'
 
 	def do_GET(self):
 		print threading.currentThread().getName()
@@ -26,9 +28,34 @@ class Handler( BaseHTTPRequestHandler ):
 			print self.isWeixinSignature()
 			text = self.getParams['echostr']
 		self.sendResponse(text)
-
-
 		return
+
+	def do_POST(self):
+		form = cgi.FieldStorage(
+			fp=self.rfile,
+			headers=self.headers,
+			environ={'REQUEST_METHOD':'POST',
+					 'CONTENT_TYPE':self.headers['Content-Type'],
+					 })
+		print form
+		self.send_response(200)
+		self.end_headers()
+		'''
+		self.wfile.write('Client: %s\n' % str(self.client_address))
+		self.wfile.write('User-agent: %s\n' % str(self.headers['user-agent']))
+		self.wfile.write('Path: %s\n' % self.path)
+		self.wfile.write('Form data:\n')
+		'''
+		text = '''
+<xml>
+<ToUserName><![CDATA[o456EjonCiPoKk69egF8UNus5HkY]]></ToUserName>
+<FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
+<CreateTime>[timestamp]</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[你好，系统尚在测试中……]]></Content>
+</xml>
+'''  
+		self.wfile.write(text)
 		
 	def requestGet(self):
 		paramDict = {}
@@ -61,18 +88,15 @@ class Handler( BaseHTTPRequestHandler ):
 	def sendResponse(self, text):
 		self.send_head(text)
 		self.wfile.write(text)
-		self.wfile.write('\n')
 		self.wfile.close()
 	
 	
 	def send_head(self, text):
 		self.send_response(200)
 		self.send_header("Content-type", 'text/html')
-		
 		fullLength = len(text)
-		print fullLength
+		print fullLength, text
 		self.send_header("Content-Length", str(fullLength))
-		self.send_header("Cache-Control", 'must-revalidate');
 		self.end_headers()
 		return
 
@@ -92,9 +116,10 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 	"""Handle requests in a separate thread."""
 	
 if __name__ == '__main__':
-	server_address = ('', 8181) #('localhost', 8181)
+	serverPort = 80
+	server_address = ('', serverPort) #('localhost', 8181)
 	#server = HTTPServer( server_address, Handler)
 	server = ThreadedHTTPServer( server_address, Handler)
-	print 'Download server is running at http://127.0.0.1:8181/'
+	print 'Download server is running at http://127.0.0.1:' + str(serverPort)
 	print 'Starting server, use <Ctrl-C> to stop'
 	server.serve_forever()
