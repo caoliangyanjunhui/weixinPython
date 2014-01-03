@@ -37,8 +37,11 @@ class Handler( BaseHTTPRequestHandler ):
 			environ={'REQUEST_METHOD':'POST',
 					 'CONTENT_TYPE':self.headers['Content-Type'],
 					 })
-		print form
-		print self.rfile
+		if form.file:      
+			data = form.file.read()   
+			print data          
+		else:                          
+			print "data is None"  
 		
 		self.send_response(200)
 		self.end_headers()
