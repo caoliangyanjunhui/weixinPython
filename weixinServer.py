@@ -13,6 +13,7 @@ import sys
 import hashlib
 import timeHelper
 import cgi
+import xml.etree.ElementTree as ET
 
 RESPONSE_TEXT_TEMPLATE = '''
 <xml>
