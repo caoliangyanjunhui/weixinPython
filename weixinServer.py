@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 
 RESPONSE_TEXT_TEMPLATE = '''
 <xml>
-<ToUserName><![CDATA[{TO_USER}}]]></ToUserName>
+<ToUserName><![CDATA[{TO_USER}]]></ToUserName>
 <FromUserName><![CDATA[{FROM_USER}]]></FromUserName>
 <CreateTime>{TIME_STEMP}</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
