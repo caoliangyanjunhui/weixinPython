@@ -38,7 +38,7 @@ class Handler( BaseHTTPRequestHandler ):
 					 'CONTENT_TYPE':self.headers['Content-Type'],
 					 })
 		print form
-		#print self.rfile
+		print self.rfile
 		
 		self.send_response(200)
 		self.end_headers()
