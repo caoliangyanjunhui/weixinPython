@@ -21,8 +21,11 @@ class Handler( BaseHTTPRequestHandler ):
 		print self.path
 		self.getParams = self.requestGet()
 		print self.getParams
-		print self.isWeixinSignature()
-		self.sendResponse()
+		text = 'empty'
+		if self.getParams:
+			print self.isWeixinSignature()
+			text = self.getParams['echostr']
+		self.sendResponse(text)
 
 
 		return
@@ -55,8 +58,7 @@ class Handler( BaseHTTPRequestHandler ):
 
 		
 		
-	def sendResponse(self):
-		text = self.getParams['echostr']
+	def sendResponse(self, text):
 		self.send_head(text)
 		self.wfile.write(text)
 		self.wfile.write('\n')
