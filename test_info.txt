@@ -1,0 +1,23 @@
+ssh root@106.186.115.228
+
+root@localhost:~/github/weixinPython# python weixinServer.py 
+Download server is running at http://127.0.0.1:80
+Starting server, use <Ctrl-C> to stop
+<xml><ToUserName><![CDATA[gh_6b3b8890948b]]></ToUserName>
+<FromUserName><![CDATA[o456EjonCiPoKk69egF8UNus5HkY]]></FromUserName>
+<CreateTime>1388743799</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[dd]]></Content>
+<MsgId>5964609199237810556</MsgId>
+</xml>
+114.134.85.56 - - [03/Jan/2014 10:09:59] "POST /1.html?signature=b888b00ff48f345828c4626936cbb470c24779c5&timestamp=1388743799&nonce=1388408300 HTTP/1.0" 200 -
+{'FromUserName': 'o456EjonCiPoKk69egF8UNus5HkY', 'MsgId': '5964609199237810556', 'ToUserName': 'gh_6b3b8890948b', 'Content': 'dd', 'MsgType': 'text', 'CreateTime': '1388743799'}
+
+<xml>
+<ToUserName><![CDATA[gh_6b3b8890948b}]]></ToUserName>
+<FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
+<CreateTime>1388743799}</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[你好，系统尚在测试中……您刚才说的是：dd]]></Content>
+</xml>
+
