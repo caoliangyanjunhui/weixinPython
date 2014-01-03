@@ -31,7 +31,6 @@ class Handler( BaseHTTPRequestHandler ):
 		return
 
 	def do_POST(self):
-		'''
 		form = cgi.FieldStorage(
 			fp=self.rfile,
 			headers=self.headers,
@@ -39,9 +38,8 @@ class Handler( BaseHTTPRequestHandler ):
 					 'CONTENT_TYPE':self.headers['Content-Type'],
 					 })
 		print form
-		'''
-		s = str(self.rfile.read())
-		print s
+		#print self.rfile
+		
 		self.send_response(200)
 		self.end_headers()
 		'''
