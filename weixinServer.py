@@ -77,7 +77,8 @@ class Handler( BaseHTTPRequestHandler ):
 		responseDict['TO_USER'] = dataDict['FromUserName']
 		responseDict['FROM_USER'] = dataDict['ToUserName']
 		responseDict['TIME_STEMP'] = str(timeHelper.unixTimeStamp())
-		responseDict['RESPONSE_CONTENT'] = u'你好，系统尚在测试中……您刚才说的是：' + dataDict['Content']
+		text = u'你好，系统尚在测试中……您刚才说的是：' + dataDict['Content']
+		responseDict['RESPONSE_CONTENT'] = text.encode('UTF-8')
 		return responseDict
 
 	def responseXML(self, dataDict):
