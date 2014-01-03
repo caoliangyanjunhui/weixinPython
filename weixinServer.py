@@ -60,7 +60,7 @@ class Handler( BaseHTTPRequestHandler ):
 		dataDict = self.xmlToDict(data)
 		print dataDict
 
-		responseDict = self.responseDictFromInputDict()
+		responseDict = self.responseDictFromInputDict(dataDict)
 		text = self.responseXML(responseDict)
 		print text
 		self.wfile.write(text)
