@@ -14,6 +14,16 @@ import hashlib
 import timeHelper
 import cgi
 
+RESPONSE_TEXT_TEMPLATE = '''
+<xml>
+<ToUserName><![CDATA[{TO_USER}}]]></ToUserName>
+<FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
+<CreateTime>{TIME_STEMP}}</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[你好，系统尚在测试中……您刚才说的是：{RESPONSE_CONTENT}]]></Content>
+</xml>
+'''  
+
 
 class Handler( BaseHTTPRequestHandler ):
 	TOKEN = 'thisismytoken'
@@ -45,22 +55,27 @@ class Handler( BaseHTTPRequestHandler ):
 		
 		self.send_response(200)
 		self.end_headers()
-		'''
-		self.wfile.write('Client: %s\n' % str(self.client_address))
-		self.wfile.write('User-agent: %s\n' % str(self.headers['user-agent']))
-		self.wfile.write('Path: %s\n' % self.path)
-		self.wfile.write('Form data:\n')
-		'''
-		text = '''
-<xml>
-<ToUserName><![CDATA[o456EjonCiPoKk69egF8UNus5HkY]]></ToUserName>
-<FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
-<CreateTime>[timestamp]</CreateTime>
-<MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[你好，系统尚在测试中……]]></Content>
-</xml>
-'''  
+
+		dataDict = self.xmlToDict(data)
+		print dataDict
+
+		text = self.responseXML(dataDict)
+		print text
 		self.wfile.write(text)
+
+	def xmlToDict(self, xmlText):
+		xmlDict = {}
+		itemlist = ET.fromstring(xmlText)
+		for child in itemlist:
+			xmlDict[child.tag] = child.text
+		return xmlDict
+
+	def responseXML(self, dataDict):
+		text = RESPONSE_TEXT_TEMPLATE 
+		for key, value in dataDict.items():
+			parameter = '{%s}' % key
+			text = text.replace(parameter, value)
+		return text
 		
 	def requestGet(self):
 		paramDict = {}
