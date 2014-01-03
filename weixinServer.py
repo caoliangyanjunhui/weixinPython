@@ -17,11 +17,11 @@ import xml.etree.ElementTree as ET
 
 RESPONSE_TEXT_TEMPLATE = '''
 <xml>
-<ToUserName><![CDATA[{ToUserName}}]]></ToUserName>
-<FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
-<CreateTime>{TIME_STEMP}}</CreateTime>
+<ToUserName><![CDATA[{TO_USER}}]]></ToUserName>
+<FromUserName><![CDATA[{FROM_USER}]]></FromUserName>
+<CreateTime>{TIME_STEMP}</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[你好，系统尚在测试中……您刚才说的是：{Content}]]></Content>
+<Content><![CDATA[{RESPONSE_CONTENT}]]></Content>
 </xml>
 '''  
 
@@ -60,9 +60,8 @@ class Handler( BaseHTTPRequestHandler ):
 		dataDict = self.xmlToDict(data)
 		print dataDict
 
-		dataDict['TIME_STEMP'] = str(timeHelper.unixTimeStamp())
-
-		text = self.responseXML(dataDict)
+		responseDict = self.responseDictFromInputDict()
+		text = self.responseXML(responseDict)
 		print text
 		self.wfile.write(text)
 
@@ -72,6 +71,14 @@ class Handler( BaseHTTPRequestHandler ):
 		for child in itemlist:
 			xmlDict[child.tag] = child.text
 		return xmlDict
+
+	def responseDictFromInputDict(self, dataDict):
+		responseDict = {}
+		responseDict['TO_USER'] = dataDict['FromUserName']
+		responseDict['FROM_USER'] = dataDict['ToUserName']
+		responseDict['TIME_STEMP'] = str(timeHelper.unixTimeStamp())
+		responseDict['RESPONSE_CONTENT'] = '你好，系统尚在测试中……您刚才说的是：' + dataDict['Content']
+		return responseDict
 
 	def responseXML(self, dataDict):
 		text = RESPONSE_TEXT_TEMPLATE 
