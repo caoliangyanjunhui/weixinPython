@@ -17,11 +17,11 @@ import xml.etree.ElementTree as ET
 
 RESPONSE_TEXT_TEMPLATE = '''
 <xml>
-<ToUserName><![CDATA[{TO_USER}}]]></ToUserName>
+<ToUserName><![CDATA[{ToUserName}}]]></ToUserName>
 <FromUserName><![CDATA[gh_6b3b8890948b]]></FromUserName>
 <CreateTime>{TIME_STEMP}}</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[你好，系统尚在测试中……您刚才说的是：{RESPONSE_CONTENT}]]></Content>
+<Content><![CDATA[你好，系统尚在测试中……您刚才说的是：{Content}]]></Content>
 </xml>
 '''  
 
@@ -59,6 +59,8 @@ class Handler( BaseHTTPRequestHandler ):
 
 		dataDict = self.xmlToDict(data)
 		print dataDict
+
+		dataDict['TIME_STEMP'] = str(timeHelper.unixTimeStamp())
 
 		text = self.responseXML(dataDict)
 		print text
